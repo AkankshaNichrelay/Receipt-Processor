@@ -1,0 +1,17 @@
+version: '3'
+
+env:
+  APP: receipt-processor
+
+tasks:
+  deps:
+    cmds:
+      - go mod tidy
+
+  build:
+    cmds:
+      - go build ./cmd/$APP
+
+  run:
+    cmds:
+      - ./$APP
