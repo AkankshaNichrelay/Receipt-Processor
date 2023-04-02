@@ -21,8 +21,7 @@ func (h *Handler) AddReceipt(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	receiptID, _ := h.receipts.AddReceipt(receipt)
-	// TODO: return JSON string
-	render.JSON(w, r, receiptID)
+	render.JSON(w, r, map[string]string{"id": receiptID})
 }
 
 // GetReceiptPoints Returns the points awarded for the receipt
@@ -34,6 +33,5 @@ func (h *Handler) GetReceiptPoints(w http.ResponseWriter, r *http.Request) {
 		render.JSON(w, r, "No receipt found for that id")
 		return
 	}
-	// TODO: return JSON string
-	render.JSON(w, r, points)
+	render.JSON(w, r, map[string]int64{"points": points})
 }
