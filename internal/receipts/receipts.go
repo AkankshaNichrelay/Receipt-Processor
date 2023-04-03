@@ -76,7 +76,7 @@ func (r *Receipts) AddReceipt(receipt Receipt) (string, error) {
 // processReceipt calculates reward points based on given rules
 func (r *Receipts) calculateRewardPoints(receipt *Receipt) error {
 	var points int64
-	points += r.receiptAlphaNumericCharsConstraintPoints(receipt.Retailer)
+	points += r.retailerAlphaNumericCharsConstraintPoints(receipt.Retailer)
 	points += r.totalIsRoundDollarConstraintPoints(receipt.Total)
 	points += r.totalIsMulitpleConstraintPoints(receipt.Total)
 	points += r.countItemPairsConstraintPoints(len(receipt.Items))

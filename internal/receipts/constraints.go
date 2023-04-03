@@ -20,8 +20,8 @@ const (
 	purchaseTimeRangeConstraintEndTime             = 1600
 )
 
-// receiptAlphaNumericCharsConstraintPoints 1 point for every alphanumeric character in the retailer name.
-func (r *Receipts) receiptAlphaNumericCharsConstraintPoints(retailer string) int64 {
+// retailerAlphaNumericCharsConstraintPoints 1 point for every alphanumeric character in the retailer name.
+func (r *Receipts) retailerAlphaNumericCharsConstraintPoints(retailer string) int64 {
 	var alphaNumCount int64
 	for _, ch := range retailer {
 		if r.isAlphaNumericChar(ch) {
