@@ -2,6 +2,7 @@ package receipts
 
 import (
 	"math"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -65,7 +66,12 @@ func (r *Receipts) itemDescriptionLengthConstraintPoints(items []Item) int64 {
 		itemLength := len(strings.TrimSpace(item.ShortDescription))
 		// check is item length is a multiple of itemDescriptionLengthConstraintMultiplier
 		if itemLength%itemDescriptionLengthConstraintMultiplier == 0 {
-			points += math.Ceil(item.Price * itemDescriptionLengthConstraintPriceMultiplier)
+			price, err := strconv.ParseFloat(item.Price, 64)
+			if err != nil {
+				r.log.Println("itemDescriptionLengthConstraintPoints item Parse failed.", "err:", err)
+				return 0
+			}
+			points += math.Ceil(price * itemDescriptionLengthConstraintPriceMultiplier)
 		}
 	}
 
