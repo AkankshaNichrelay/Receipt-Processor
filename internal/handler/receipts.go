@@ -20,7 +20,15 @@ func (h *Handler) AddReceipt(w http.ResponseWriter, r *http.Request) {
 		render.JSON(w, r, "The receipt is invalid")
 		return
 	}
-	receiptID, _ := h.receipts.AddReceipt(receipt)
+
+	receiptID := h.receipts.AddReceipt(receipt)
+	if receiptID == "" {
+		log.Println("AddReceipt error while processing.")
+		render.Status(r, http.StatusBadRequest)
+		render.JSON(w, r, "The receipt is invalid")
+		return
+	}
+	// return the receipt id
 	render.JSON(w, r, map[string]string{"id": receiptID})
 }
 
@@ -34,4 +42,16 @@ func (h *Handler) GetReceiptPoints(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	render.JSON(w, r, map[string]int64{"points": points})
+}
+
+// GetReceiptPoints Returns the points awarded for the receipt
+func (h *Handler) GetReceiptByID(w http.ResponseWriter, r *http.Request) {
+	receiptID := chi.URLParam(r, "id")
+	receipt, err := h.receipts.GetReceiptByID(receiptID)
+	if err != nil {
+		render.Status(r, http.StatusNotFound)
+		render.JSON(w, r, "No receipt found for that id")
+		return
+	}
+	render.JSON(w, r, receipt)
 }

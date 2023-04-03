@@ -25,6 +25,7 @@ func New(lg *log.Logger, recs *receipts.Receipts) *Handler {
 
 	mux.Get("/", h.getHome)
 	mux.Get("/receipts/{id}/points", h.GetReceiptPoints)
+	mux.Get("/receipts/{id}", h.GetReceiptByID)
 	mux.Post("/receipts/process", h.AddReceipt)
 	return &h
 }
