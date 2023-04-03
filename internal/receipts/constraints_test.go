@@ -47,6 +47,6 @@ func TestRetailerAlphaNumericCharsConstraintPoints(t *testing.T) {
 		return
 	}
 
-	points := r.retailerAlphaNumericCharsConstraintPoints(rec1.Retailer)
+	points := r.retailerAlphaNumConstraint(rec1.Retailer)
 	assert.Equal(t, points, int64(6), "TestRetailerAlphaNumericCharsConstraintPoints failed")
 }
