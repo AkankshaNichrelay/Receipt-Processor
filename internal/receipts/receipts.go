@@ -3,6 +3,7 @@ package receipts
 import (
 	"fmt"
 	"log"
+	"strconv"
 	"time"
 
 	"github.com/google/uuid"
@@ -15,19 +16,19 @@ const (
 
 // Item describes an item in a receipt
 type Item struct {
-	ShortDescription string  `json:"shortDescription"`
-	Price            float64 `json:"price,string"`
+	ShortDescription string `json:"shortDescription" validate:"required"`
+	Price            string `json:"price" validate:"required"`
 }
 
 // Receipt contains receipt details
 type Receipt struct {
-	ReceiptID    string
-	Retailer     string  `json:"retailer"`
-	PurchaseDate string  `json:"purchaseDate"`
-	PurchaseTime string  `json:"purchaseTime"`
-	Items        []Item  `json:"items"`
-	Total        float64 `json:"total,string"`
-	RewardPoints int64
+	ReceiptID    string `json:"id"`
+	Retailer     string `json:"retailer" validate:"required"`
+	PurchaseDate string `json:"purchaseDate" validate:"required"`
+	PurchaseTime string `json:"purchaseTime" validate:"required"`
+	Items        []Item `json:"items" validate:"required,min=1,dive"`
+	Total        string `json:"total" validate:"required"`
+	RewardPoints int64  `json:"points"`
 }
 
 // Receipts contains all receipts in system
@@ -55,42 +56,63 @@ func (r *Receipts) GetReceiptPointsByID(receiptID string) (int64, error) {
 	return 0, fmt.Errorf("ReceiptID not found in records")
 }
 
+// GetReceiptByID returns the receipt object for the given receipt ID
+func (r *Receipts) GetReceiptByID(receiptID string) (*Receipt, error) {
+	if val, ok := r.DB[receiptID]; ok {
+		return &val, nil
+	}
+
+	// Key not found
+	return nil, fmt.Errorf("ReceiptID not found in records")
+}
+
 // AddReceipt stores Receipt and returns receiptID
-func (r *Receipts) AddReceipt(receipt Receipt) (string, error) {
+func (r *Receipts) AddReceipt(receipt Receipt) string {
+
+	if err := r.validateReceipt(&receipt); err != nil {
+		r.log.Println("AddReceipt validateReceipt failed.", "err:", err)
+		return ""
+	}
+
 	id := uuid.New().String()
 	receipt.ReceiptID = id
 
 	err := r.calculateRewardPoints(&receipt)
 	if err != nil {
 		r.log.Println("AddReceipt calculateRewardPoints failed.", "err:", err)
-		return "", err
+		return ""
 	}
 
 	// store the receipt in DB
 	r.DB[id] = receipt
 	log.Printf("AddReceipt new receipt added: %+v\n", receipt)
 
-	return id, nil
+	return id
 }
 
 // processReceipt calculates reward points based on given rules
 func (r *Receipts) calculateRewardPoints(receipt *Receipt) error {
 	var points int64
 	points += r.retailerAlphaNumericCharsConstraintPoints(receipt.Retailer)
-	points += r.totalIsRoundDollarConstraintPoints(receipt.Total)
-	points += r.totalIsMulitpleConstraintPoints(receipt.Total)
+
+	total, err := strconv.ParseFloat(receipt.Total, 64)
+	if err != nil {
+		return fmt.Errorf("total Parse failed. Err: %v", err)
+	}
+	points += r.totalIsRoundDollarConstraintPoints(total)
+	points += r.totalIsMulitpleConstraintPoints(total)
 	points += r.countItemPairsConstraintPoints(len(receipt.Items))
 	points += r.itemDescriptionLengthConstraintPoints(receipt.Items)
 
 	purchaseDate, err := time.Parse(PurchaseDateFormat, receipt.PurchaseDate)
 	if err != nil {
-		return fmt.Errorf("calculateRewardPoints purchaseDate Parse failed. Err: %v", err)
+		return fmt.Errorf("purchaseDate Parse failed. Err: %v", err)
 	}
 	points += r.purchaseDateIsOddConstraintPoints(purchaseDate)
 
 	purchaseTime, err := time.Parse(PurchaseTimeFormat, receipt.PurchaseTime)
 	if err != nil {
-		return fmt.Errorf("calculateRewardPoints purchaseTime Parse failed. Err: %v", err)
+		return fmt.Errorf("purchaseTime Parse failed. Err: %v", err)
 	}
 	points += r.purchaseTimeRangeConstraintPoints(purchaseTime)
 	receipt.RewardPoints = points
