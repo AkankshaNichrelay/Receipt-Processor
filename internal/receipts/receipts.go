@@ -93,28 +93,28 @@ func (r *Receipts) AddReceipt(receipt Receipt) string {
 // processReceipt calculates reward points based on given rules
 func (r *Receipts) calculateRewardPoints(receipt *Receipt) error {
 	var points int64
-	points += r.retailerAlphaNumConstraint(receipt.Retailer)
+	points += r.getRetailerAlphaNumPoints(receipt.Retailer)
 
 	total, err := strconv.ParseFloat(receipt.Total, 64)
 	if err != nil {
 		return fmt.Errorf("total Parse failed. Err: %v", err)
 	}
-	points += r.totalRoundDollarConstraint(total)
-	points += r.totalIsMulitpleConstraint(total)
-	points += r.itemPairsConstraint(len(receipt.Items))
-	points += r.descriptionLengthConstraint(receipt.Items)
+	points += r.getTotalRoundDollarPoints(total)
+	points += r.getTotalIsMulitplePoints(total)
+	points += r.getItemPairPoints(len(receipt.Items))
+	points += r.getDescriptionLengthPoints(receipt.Items)
 
 	purchaseDate, err := time.Parse(PurchaseDateFormat, receipt.PurchaseDate)
 	if err != nil {
 		return fmt.Errorf("purchaseDate Parse failed. Err: %v", err)
 	}
-	points += r.purchaseDateOddConstraint(purchaseDate)
+	points += r.getPurchaseDateOddPoints(purchaseDate)
 
 	purchaseTime, err := time.Parse(PurchaseTimeFormat, receipt.PurchaseTime)
 	if err != nil {
 		return fmt.Errorf("purchaseTime Parse failed. Err: %v", err)
 	}
-	points += r.purchaseTimeRangeConstraint(purchaseTime)
+	points += r.getPurchaseTimeRangePoints(purchaseTime)
 	receipt.RewardPoints = points
 
 	return nil

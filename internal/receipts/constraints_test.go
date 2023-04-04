@@ -97,13 +97,13 @@ func MockReceipts() *Receipts {
 	return r
 }
 
-func TestRetailerAlphaNumConstraint(t *testing.T) {
+func TestGetRetailerAlphaNumPoints(t *testing.T) {
 	r := MockReceipts()
 
 	cases := []TableTests{
-		{description: "morning", receipt: receipt2, expected: 9},
-		{description: "readme1", receipt: receipt3, expected: 6},
-		{description: "readme2", receipt: receipt4, expected: 14},
+		{description: "morning", receipt: receipt2, expected: 9 * retailerAlphaNumPoints},
+		{description: "readme1", receipt: receipt3, expected: 6 * retailerAlphaNumPoints},
+		{description: "readme2", receipt: receipt4, expected: 14 * retailerAlphaNumPoints},
 	}
 
 	for _, tt := range cases {
@@ -114,13 +114,13 @@ func TestRetailerAlphaNumConstraint(t *testing.T) {
 				return
 			}
 
-			points := r.retailerAlphaNumConstraint(rec.Retailer)
-			assert.Equal(t, tt.expected, points, "TestRetailerAlphaNumConstraint failed case: %s", tt.description)
+			points := r.getRetailerAlphaNumPoints(rec.Retailer)
+			assert.Equal(t, tt.expected, points, "TestGetRetailerAlphaNumPoints failed case: %s", tt.description)
 		})
 	}
 }
 
-func TestTotalRoundDollarConstraint(t *testing.T) {
+func TestGetTotalRoundDollarPoints(t *testing.T) {
 	r := MockReceipts()
 
 	cases := []TableTests{
@@ -139,13 +139,13 @@ func TestTotalRoundDollarConstraint(t *testing.T) {
 			if !assert.NoError(t, err) {
 				return
 			}
-			points := r.totalRoundDollarConstraint(total)
-			assert.Equal(t, tt.expected, points, "TestTotalRoundDollarConstraint failed case: %s", tt.description)
+			points := r.getTotalRoundDollarPoints(total)
+			assert.Equal(t, tt.expected, points, "TestGetTotalRoundDollarPoints failed case: %s", tt.description)
 		})
 	}
 }
 
-func TestTotalIsMulitpleConstraint(t *testing.T) {
+func TestGetTotalIsMulitplePoints(t *testing.T) {
 	r := MockReceipts()
 
 	cases := []TableTests{
@@ -166,20 +166,20 @@ func TestTotalIsMulitpleConstraint(t *testing.T) {
 			if !assert.NoError(t, err) {
 				return
 			}
-			points := r.totalIsMulitpleConstraint(total)
-			assert.Equal(t, tt.expected, points, "TestTotalIsMulitpleConstraint failed case: %s", tt.description)
+			points := r.getTotalIsMulitplePoints(total)
+			assert.Equal(t, tt.expected, points, "TestGetTotalIsMulitplePoints failed case: %s", tt.description)
 		})
 	}
 }
 
-func TestItemPairsConstraint(t *testing.T) {
+func TestGetItemPairPoints(t *testing.T) {
 	r := MockReceipts()
 
 	cases := []TableTests{
 		{description: "simple", receipt: receipt1, expected: 0},
-		{description: "morning", receipt: receipt2, expected: itemPairsPoints},
-		{description: "readme1", receipt: receipt3, expected: 2 * itemPairsPoints},
-		{description: "readme2", receipt: receipt4, expected: 2 * itemPairsPoints},
+		{description: "morning", receipt: receipt2, expected: itemPairPoints},
+		{description: "readme1", receipt: receipt3, expected: 2 * itemPairPoints},
+		{description: "readme2", receipt: receipt4, expected: 2 * itemPairPoints},
 	}
 
 	for _, tt := range cases {
@@ -190,13 +190,13 @@ func TestItemPairsConstraint(t *testing.T) {
 				return
 			}
 
-			points := r.itemPairsConstraint(len(rec.Items))
-			assert.Equal(t, tt.expected, points, "TestItemPairsConstraint failed case: %s", tt.description)
+			points := r.getItemPairPoints(len(rec.Items))
+			assert.Equal(t, tt.expected, points, "TestGetItemPairPointsfailed case: %s", tt.description)
 		})
 	}
 }
 
-func TestDescriptionLengthConstraint(t *testing.T) {
+func TestGetDescriptionLengthPoints(t *testing.T) {
 	r := MockReceipts()
 
 	cases := []TableTests{
@@ -214,13 +214,13 @@ func TestDescriptionLengthConstraint(t *testing.T) {
 				return
 			}
 
-			points := r.descriptionLengthConstraint(rec.Items)
-			assert.Equal(t, tt.expected, points, "TestDescriptionLengthConstraint failed case: %s", tt.description)
+			points := r.getDescriptionLengthPoints(rec.Items)
+			assert.Equal(t, tt.expected, points, "TestGetDescriptionLengthPoints failed case: %s", tt.description)
 		})
 	}
 }
 
-func TestPurchaseDateOddConstraint(t *testing.T) {
+func TestGetPurchaseDateOddPoints(t *testing.T) {
 	r := MockReceipts()
 
 	cases := []TableTests{
@@ -240,13 +240,13 @@ func TestPurchaseDateOddConstraint(t *testing.T) {
 			if !assert.NoError(t, err) {
 				return
 			}
-			points := r.purchaseDateOddConstraint(purchaseDate)
-			assert.Equal(t, tt.expected, points, "TestPurchaseDateOddConstraint failed case: %s", tt.description)
+			points := r.getPurchaseDateOddPoints(purchaseDate)
+			assert.Equal(t, tt.expected, points, "TestGetPurchaseDateOddPoints failed case: %s", tt.description)
 		})
 	}
 }
 
-func TestPurchaseTimeRangeConstraint(t *testing.T) {
+func TestGetPurchaseTimeRangePoints(t *testing.T) {
 	r := MockReceipts()
 
 	cases := []TableTests{
@@ -266,8 +266,8 @@ func TestPurchaseTimeRangeConstraint(t *testing.T) {
 			if !assert.NoError(t, err) {
 				return
 			}
-			points := r.purchaseTimeRangeConstraint(purchaseTime)
-			assert.Equal(t, tt.expected, points, "TestPurchaseTimeRangeConstraint failed case: %s", tt.description)
+			points := r.getPurchaseTimeRangePoints(purchaseTime)
+			assert.Equal(t, tt.expected, points, "TestGetPurchaseTimeRangePoints failed case: %s", tt.description)
 		})
 	}
 }
