@@ -15,8 +15,16 @@ tasks:
 
   build:
     cmds:
-      - go build ./cmd/$APP
+      - go build -o ./bin/$APP ./cmd/$APP
 
   run:
     cmds:
-      - ./$APP
+      - ./bin/$APP
+
+  docker-build:
+    cmds:
+      - docker build -t $APP-build .
+
+  docker-run:
+    cmds:    
+      - docker run -p 8080:8080 $APP-build
