@@ -15,6 +15,7 @@ func main() {
 	logger := log.Default()
 	receipts := receipts.New(logger)
 	handler := handler.New(logger, receipts)
+	// TODO: make the port an environment variable
 	go http.ListenAndServe(":8080", handler.Router)
 	log.Println("Listening on localhost:8080...")
 	Stop()
