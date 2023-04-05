@@ -2,11 +2,16 @@ version: '3'
 
 env:
   APP: receipt-processor
+  PKG: '{{.PKG | default "..."}}'
 
 tasks:
   deps:
     cmds:
       - go mod tidy
+
+  test:
+    cmds:
+      - go test -p 1 ./$PKG
 
   build:
     cmds:
