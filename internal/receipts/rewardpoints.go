@@ -35,6 +35,7 @@ func (r *Receipts) getRetailerAlphaNumPoints(retailer string) int64 {
 
 // getTotalRoundDollarPoints returns totalDollarPoints if the total is a round dollar
 func (r *Receipts) getTotalRoundDollarPoints(total float64) int64 {
+	// Assumption: 0.00 dollars is a reward eligible amount
 	if r.isWholeNumber(total) {
 		return totalDollarPoints
 	}
@@ -43,6 +44,7 @@ func (r *Receipts) getTotalRoundDollarPoints(total float64) int64 {
 
 // getTotalIsMulitplePoints returns totalIsMulitplePoints if the total is a multiple of totalConstraintMultiple
 func (r *Receipts) getTotalIsMulitplePoints(total float64) int64 {
+	// Assumption: 0.00 dollars is a reward eligible amount
 	rem := total / totalConstraintMultiple
 	if r.isWholeNumber(rem) {
 		return totalIsMulitplePoints
@@ -89,7 +91,10 @@ func (r *Receipts) getPurchaseDateOddPoints(purchaseDate time.Time) int64 {
 
 /* getPurchaseTimeRangePoints returns purchaseTimeRangePoints points if purchaseTime is
  * after purchaseTimeRangeStart and before purchaseTimeRangeEnd.
- * Assuming the start time and end time in range are not included.
+ ** * Assumptions:
+ **	* Assuming the start time and end time in range are not included.
+ ** * Also this logic assumes that purchaseTimeRangeStart <  purchaseTimeRangeEnd always holds true.
+ **   If this condition changes then the below logic will not work
 **/
 func (r *Receipts) getPurchaseTimeRangePoints(purchaseTime time.Time) int64 {
 	time24hr := purchaseTime.Hour()*100 + purchaseTime.Minute()
