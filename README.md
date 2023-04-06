@@ -8,7 +8,7 @@ in the [api.yml](./api.yml) file. The application currently stores information i
 ### Prerequisites
 This services uses [Taskfile](./Taskfile.yml) for ease in running various commands. You may skip this and use docker commands stated below directly.
 
-For Mac users install Homebrew:
+For Mac users install Homebrew and use brew install:
 ```
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 brew install go-task/tap/go-task
