@@ -23,6 +23,10 @@ func New(lg *log.Logger, recs *receipts.Receipts) *Handler {
 		receipts: recs,
 	}
 
+	mux.NotFound(func(w http.ResponseWriter, r *http.Request) {
+		http.Error(w, "Bad Request", http.StatusNotFound)
+	})
+
 	mux.Get("/", h.getHome)
 	mux.Get("/receipts/{id}/points", h.GetReceiptPoints)
 	mux.Get("/receipts/{id}", h.GetReceiptByID)

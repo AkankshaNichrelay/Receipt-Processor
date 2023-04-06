@@ -44,7 +44,7 @@ func (r *Receipts) validateRequiredFields(receipt *Receipt) error {
 	return nil
 }
 
-// validateRegex to match the api.yml specification. Not checking for now due to conflicting example in ReadME
+// validateRegex to match the api.yml specification. Not checking for now due to conflicting example provided in ReadME
 func (r *Receipts) validateRegex(receipt *Receipt) error {
 	reFloats := regexp.MustCompile(RegexFloats)
 	reDesc := regexp.MustCompile(RegexDescription)
