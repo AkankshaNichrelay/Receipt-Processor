@@ -1,35 +1,45 @@
 # Receipt Processor
 
-A webservice that fulfils the documented API. The API is described below. A formal definition is provided 
+A webservice written in Golang that fulfils the documented API. The API is described below. A formal definition is provided 
 in the [api.yml](./api.yml) file. The application currently stores information in memory.
 
 ## Instructions to run application locally.
 
-### Prerequisites
+### Running Locally without Taskfile
+* Run docker unit tests
+  * ``` docker run -p 8080:8080 receipt-processor-build go test ./... ```
+* Build docker image
+  * ``` docker build -t receipt-processor-build . ```
+* Run Docker container
+  * ``` docker run -p 8080:8080 receipt-processor-build ```
+
+### Running Locally using Taskfile
+
 This services uses [Taskfile](./Taskfile.yml) for ease in running various commands. You may skip this and use docker commands stated below directly.
 
-For Mac users install Homebrew and use brew install:
+* For Mac users,
+Install Homebrew:
 ```
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+Then install task using brew:
+```
 brew install go-task/tap/go-task
 ```
-For other OS/ package managers, follow steps for your package manager provided here: https://taskfile.dev/installation/
 
-### Running Locally
-* Run unit tests
+* For other OS/ package managers, follow steps for your package manager provided here: https://taskfile.dev/installation/
+
+* Run Docker unit tests
     * All packages
-        `task test`
+      *  ```task docker-test```
     * A single package
-        `task test PKG=[path to package]`
+      * ```task docker-test PKG=[path to package]```
 * Build Docker image
-    `task docker-build`
+      * ```task docker-build```
 * Run Docker container
-    `task docker-run`
-* If taskfile does not work for some reason
-    * Build docker image
-      * ``` docker build -t receipt-processor-build . ```
-    * Run Docker container
-      * ``` docker run -p 8080:8080 receipt-processor-build ```
+      * ```task docker-run```
+
 * Postman (optional. Would need to create postman account)
     * Click on the button below and click on `View collection` to run in web browser. You can also `import a copy` or `Fork Collection`.
     * Set the "receipt-processor_url" to the local url of host. Example: localhost:8080
