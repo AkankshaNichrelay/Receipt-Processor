@@ -15,9 +15,9 @@ in the [api.yml](./api.yml) file. The application currently stores information i
 
 ### Running Locally using Taskfile
 
-This services uses [Taskfile](./Taskfile.yml) for ease in running various commands. You may skip this and use docker commands stated below directly.
+This services uses [Taskfile](./Taskfile.yml) for ease in running various commands.
 
-* For Mac users,
+* To install for Mac users,
 Install Homebrew:
 ```
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
