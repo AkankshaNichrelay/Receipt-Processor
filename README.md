@@ -3,14 +3,14 @@
 A webservice written in Golang that fulfils the documented API. The API is described below. A formal definition is provided 
 in the [api.yml](./api.yml) file. The application currently stores information in memory.
 
-## Instructions to run application locally.
+## Instructions to run application locally
 
 ### Running Locally without Taskfile
 * Run docker unit tests
   * ``` docker run -p 8080:8080 receipt-processor-build go test ./... ```
 * Build docker image
   * ``` docker build -t receipt-processor-build . ```
-* Run Docker container
+* Run docker container
   * ``` docker run -p 8080:8080 receipt-processor-build ```
 
 ### Running Locally using Taskfile
@@ -36,9 +36,9 @@ brew install go-task/tap/go-task
     * A single package
       * ```task docker-test PKG=[path to package]```
 * Build Docker image
-      * ```task docker-build```
+    * ```task docker-build```
 * Run Docker container
-      * ```task docker-run```
+    * ```task docker-run```
 
 * Postman (optional. Would need to create postman account)
     * Click on the button below and click on `View collection` to run in web browser. You can also `import a copy` or `Fork Collection`.
