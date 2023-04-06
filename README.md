@@ -18,13 +18,13 @@ For other OS/ package managers, follow steps for your package manager provided h
 ### Running Locally
 * Run unit tests
     * All packages
-        * task test
+        `task test`
     * A single package
-        * task test PKG=[path to package]
+        `task test PKG=[path to package]`
 * Build Docker image
-    * task docker-build
+    `task docker-build`
 * Run Docker container
-    * task docker-run
+    `task docker-run`
 * If taskfile does not work for some reason
     * Build docker image
       * ``` docker build -t receipt-processor-build . ```
