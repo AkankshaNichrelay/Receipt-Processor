@@ -3,10 +3,10 @@
 A webservice that fulfils the documented API. The API is described below. A formal definition is provided 
 in the [api.yml](./api.yml) file. The application currently stores information in memory.
 
-# Instructions to run application locally.
+## Instructions to run application locally.
 
-## Prerequisites
-This services uses [Taskfile](./Taskfile.yml) for ease in running various commands. 
+### Prerequisites
+This services uses [Taskfile](./Taskfile.yml) for ease in running various commands. You may skip this and use docker commands stated below directly.
 
 For Mac users install Homebrew:
 ```
@@ -15,8 +15,7 @@ brew install go-task/tap/go-task
 ```
 For other OS/ package managers, follow steps for your package manager provided here: https://taskfile.dev/installation/
 
-## Running Locally
-* 
+### Running Locally
 * Run unit tests
     * All packages
         * task test
@@ -31,8 +30,9 @@ For other OS/ package managers, follow steps for your package manager provided h
       * ``` docker build -t receipt-processor-build . ```
     * Run Docker container
       * ``` docker run -p 8080:8080 receipt-processor-build ```
-* Postman
-    * Set the "receipt-processor_url" to the local url of app. Example: localhost:8080
+* Postman (optional. Would need to create postman account)
+    * Click on the button below and click on `View collection` to run in web browser. You can also `import a copy` or `Fork Collection`.
+    * Set the "receipt-processor_url" to the local url of host. Example: localhost:8080
 
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/20550046-60ceb700-a977-4c73-a11b-27e0bdb8f04f?action=collection%2Ffork&collection-url=entityId%3D20550046-60ceb700-a977-4c73-a11b-27e0bdb8f04f%26entityType%3Dcollection%26workspaceId%3De2af4782-e8cd-4f79-ac8a-1d5130679b9a#?env%5Blocal%5D=W3sia2V5IjoicmVjZWlwdC1wcm9jZXNzb3JfdXJsIiwidmFsdWUiOiJsb2NhbGhvc3Q6ODA4MCIsImVuYWJsZWQiOnRydWUsInR5cGUiOiJkZWZhdWx0Iiwic2Vzc2lvblZhbHVlIjoibG9jYWxob3N0OjgwODAiLCJzZXNzaW9uSW5kZXgiOjB9XQ==)
 
