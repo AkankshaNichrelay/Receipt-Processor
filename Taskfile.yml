@@ -22,6 +22,11 @@ tasks:
     cmds:
       - ./bin/$APP
 
+  docker-test:
+    deps: [docker-cleanup]
+    cmds:
+      - docker run -p 8080:8080 --name $DOCKER_IMAGE-app $DOCKER_IMAGE go test -p 1 ./$PKG
+
   docker-build:
     cmds:
       - docker build -t $DOCKER_IMAGE .
