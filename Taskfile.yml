@@ -26,11 +26,14 @@ tasks:
     cmds:
       - docker build -t $DOCKER_IMAGE .
 
+  # This assumes that only one container of docker image will be running on a host.
+  # If more than one container needs to run,
+  # please use `docker run -p 8080:8080 $DOCKER_IMAGE` directly.
   docker-run:
+    deps: [docker-cleanup]
     cmds:    
       - docker run -p 8080:8080 --name $DOCKER_IMAGE-app $DOCKER_IMAGE
   
   docker-cleanup:
     cmds:
-     - docker stop $DOCKER_IMAGE-app || true && docker rm $DOCKER_IMAGE-app || true
-     - docker image rm $DOCKER_IMAGE || true
+     - docker rm $DOCKER_IMAGE-app || true
